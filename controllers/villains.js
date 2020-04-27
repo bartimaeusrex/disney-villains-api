@@ -6,10 +6,10 @@ const getAllVillains = async (request, response) => {
   return response.send(villains)
 }
 
-const getVillainById = async (request, response) => {
-  const { id } = request.params
+const getVillainBySlug = async (request, response) => {
+  const { slug } = request.params
 
-  const matchingVillain = await models.Villains.findOne({ where: { id } })
+  const matchingVillain = await models.Villains.findOne({ where: { slug } })
 
   return matchingVillain
     ? response.send(matchingVillain)
@@ -30,4 +30,4 @@ const saveNewVillain = async (request, response) => {
   return response.status(201).send(newVillain)
 }
 
-module.exports = { getAllVillains, getVillainById, saveNewVillain }
+module.exports = { getAllVillains, getVillainBySlug, saveNewVillain }

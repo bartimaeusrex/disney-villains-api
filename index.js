@@ -1,14 +1,14 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { getAllVillains, getVillainById, saveNewVillain } = require('./controllers/villains')
+const { getAllVillains, getVillainBySlug, saveNewVillain } = require('./controllers/villains')
 
 const app = express()
 
-app.get('/', getAllVillains)
+app.get('/villains', getAllVillains)
 
-app.get('/:id', getVillainById)
+app.get('/villains/:slug', getVillainBySlug)
 
-app.post('/', bodyParser.json(), saveNewVillain)
+app.post('/villains', bodyParser.json(), saveNewVillain)
 
 app.listen(8080, () => {
   console.log('Listening on port 8080...') // eslint-disable-line no-console
