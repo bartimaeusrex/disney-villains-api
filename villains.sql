@@ -1,4 +1,4 @@
-DROP DATABASE villains;
+-- DROP DATABASE villains;
 CREATE DATABASE villains;
 
 CREATE USER 'jafar'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Ursula##';
@@ -56,3 +56,5 @@ INSERT INTO villains (name, movie, slug)
   VALUES ('Shere Khan', 'The Jungle Book', 'shere-khan');
 INSERT INTO villains (name, movie, slug)
   VALUES ('Ursula', 'The Little Mermaid', 'ursula');
+
+-- SELECT name, movie, slug FROM villains.villains;
