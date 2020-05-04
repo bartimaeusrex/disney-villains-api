@@ -79,7 +79,7 @@ describe('Controllers - Villains', () => {
 
       await getVillainBySlug(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { slug: 'miss-america' } })
+      expect(stubbedFindOne).to.have.been.calledWith({ attributes: ['name', 'movie', 'slug'], where: { slug: 'miss-america' } })
       expect(stubbedSend).to.have.been.calledWith(singleVillain)
     })
 
@@ -90,7 +90,7 @@ describe('Controllers - Villains', () => {
 
       await getVillainBySlug(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { slug: 'goofy' } })
+      expect(stubbedFindOne).to.have.been.calledWith({ attributes: ['name', 'movie', 'slug'], where: { slug: 'goofy' } })
       expect(stubbedSendStatus).to.have.been.calledWith(404)
     })
 
