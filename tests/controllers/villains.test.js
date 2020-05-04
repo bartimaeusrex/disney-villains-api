@@ -3,10 +3,10 @@ const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 const models = require('../../models')
 const {
-  before, beforeEach, afterEach, after, describe, it
+  before, beforeEach, afterEach, describe, it
 } = require('mocha')
 const { villainsList, singleVillain, postedVillain } = require('../mocks/villains')
-const { getAllVillains, getVillainById, saveNewVillain } = require('../../controllers/villains')
+const { getAllVillains, getVillainBySlug, saveNewVillain } = require('../../controllers/villains')
 
 chai.use(sinonChai)
 const { expect } = chai
@@ -70,36 +70,36 @@ describe('Controllers - Villains', () => {
     })
   })
 
-  describe('getVillainById', () => {
+  describe('getVillainBySlug', () => {
     // eslint-disable-next-line max-len
-    it('retrieves the villain associated with the provided id from the database and calls response.send with it', async () => {
-      const request = { params: { slug: '13' } }
+    it('retrieves the villain associated with the provided slug from the database and calls response.send with it', async () => {
+      const request = { params: { slug: 'miss-america' } }
 
       stubbedFindOne.returns(singleVillain)
 
-      await getVillainById(request, response)
+      await getVillainBySlug(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { slug: '13' } })
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { slug: 'miss-america' } })
       expect(stubbedSend).to.have.been.calledWith(singleVillain)
     })
 
     it('returns a 404 status when no villain is found', async () => {
-      const request = { params: { slug: '77' } }
+      const request = { params: { slug: 'goofy' } }
 
       stubbedFindOne.returns(null)
 
-      await getVillainById(request, response)
+      await getVillainBySlug(request, response)
 
-      expect(stubbedFindOne).to.have.been.calledWith({ where: { slug: '77' } })
+      expect(stubbedFindOne).to.have.been.calledWith({ where: { slug: 'goofy' } })
       expect(stubbedSendStatus).to.have.been.calledWith(404)
     })
 
-    it('returns a 500 status when an error occurs retrieving the villain by id', async () => {
-      const request = { params: { slug: '88' } }
+    it('returns a 500 status when an error occurs retrieving the villain by slug', async () => {
+      const request = { params: { slug: 'batman' } }
 
       stubbedFindOne.throws('ERROR!')
 
-      await getVillainById(request, response)
+      await getVillainBySlug(request, response)
 
       expect(stubbedFindOne).to.have.callCount(1)
       expect(stubbedStatus).to.have.been.calledWith(500)
@@ -130,11 +130,11 @@ describe('Controllers - Villains', () => {
 
       expect(stubbedStatus).to.have.been.calledWith(400)
       // eslint-disable-next-line max-len
-      expect(stubbedStatusDotSend).to.have.been.calledWith('The following fields are required: location, mascot, abbreviation, conference, division')
+      expect(stubbedStatusDotSend).to.have.been.calledWith('The following fields are required: name, movie, slug')
     })
 
     // eslint-disable-next-line max-len
-    it('returns a 00 when an error occurs saving the new villain', async () => {
+    it('returns a 500 when an error occurs saving the new villain', async () => {
       const request = { body: postedVillain }
 
       stubbedCreate.throws('ERROR!')

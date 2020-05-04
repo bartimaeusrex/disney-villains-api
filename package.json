@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "./node_modules/.bin/nodemon index.js",
     "lint": "./node_modules/.bin/eslint --format codeframe .",
-    "lint:fix": "./node_modules/.bin/eslint --format codeframe --fix ."
+    "lint:fix": "./node_modules/.bin/eslint --format codeframe --fix .",
+    "test": "./node_modules/.bin/mocha tests/**/*.test.js"
   },
   "repository": {
     "type": "git",

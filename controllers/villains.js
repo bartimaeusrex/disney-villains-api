@@ -5,8 +5,10 @@ const getAllVillains = async (request, response) => {
     const villains = await models.Villains.findAll({
       attributes: ['name', 'movie', 'slug']
     })
-  } catch (error) {
+
     return response.send(villains)
+  } catch (error) {
+    return response.status(500).send('Unable to retrieve villain list, please try again.')
   }
 }
 
