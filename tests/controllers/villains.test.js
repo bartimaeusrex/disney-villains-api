@@ -3,7 +3,7 @@ const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 const models = require('../../models')
 const {
-  before, beforeEach, afterEach, describe, it
+  before, beforeEach, afterEach, after, describe, it
 } = require('mocha')
 const { villainsList, singleVillain, postedVillain } = require('../mocks/villains')
 const { getAllVillains, getVillainBySlug, saveNewVillain } = require('../../controllers/villains')
@@ -49,6 +49,10 @@ describe('Controllers - Villains', () => {
     sandbox.reset()
   })
 
+  after(() => {
+    sandbox.restore()
+  })
+
   describe('getAllVillains', () => {
     it('retrieves a list of villains from the database and calls response.send() with the list', async () => {
       stubbedFindAll.returns(villainsList)
@@ -79,6 +83,7 @@ describe('Controllers - Villains', () => {
 
       await getVillainBySlug(request, response)
 
+      // eslint-disable-next-line max-len
       expect(stubbedFindOne).to.have.been.calledWith({ attributes: ['name', 'movie', 'slug'], where: { slug: 'miss-america' } })
       expect(stubbedSend).to.have.been.calledWith(singleVillain)
     })
@@ -90,6 +95,7 @@ describe('Controllers - Villains', () => {
 
       await getVillainBySlug(request, response)
 
+      // eslint-disable-next-line max-len
       expect(stubbedFindOne).to.have.been.calledWith({ attributes: ['name', 'movie', 'slug'], where: { slug: 'goofy' } })
       expect(stubbedSendStatus).to.have.been.calledWith(404)
     })
@@ -111,23 +117,24 @@ describe('Controllers - Villains', () => {
   describe('saveNewVillain', () => {
     // eslint-disable-next-line max-len
     it('accepts new villain details and saves them as a new villain, returning the saved record with a 201 status', async () => {
-      const request = { body: postedVillain }
+      const request = { body: singleVillain }
 
       stubbedCreate.returns(singleVillain)
 
       await saveNewVillain(request, response)
 
-      expect(stubbedCreate).to.have.been.calledWith(postedVillain)
+      expect(stubbedCreate).to.have.been.calledWith(singleVillain)
       expect(stubbedStatus).to.have.been.calledWith(201)
       expect(stubbedStatusDotSend).to.have.been.calledWith(singleVillain)
     })
 
-    it('returns a 400 status when not all required fields are provided (missing location)', async () => {
-      const { name, movie, slug } = postedVillain
-      const request = { body: { name, movie, slug } }
+    it('returns a 400 status when not all required fields are provided (missing movie)', async () => {
+      const { name, slug } = postedVillain
+      const request = { body: { name, slug } }
 
       await saveNewVillain(request, response)
 
+      expect(stubbedCreate).to.have.callCount(0)
       expect(stubbedStatus).to.have.been.calledWith(400)
       // eslint-disable-next-line max-len
       expect(stubbedStatusDotSend).to.have.been.calledWith('The following fields are required: name, movie, slug')

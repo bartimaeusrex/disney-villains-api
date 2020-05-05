@@ -20,17 +20,17 @@ const villainsList = [{
   slug: 'horned-king',
 }]
 
-const postedVillain = [{
+const postedVillain = {
   name: 'Ursula',
   movie: 'The Little Mermaid',
   slug: 'ursula',
-}]
+}
 
-const singleVillain = [{
+const singleVillain = {
   name: 'Madam Mim',
   movie: 'The Sword in the Stone',
   slug: 'madam-mim',
-}]
+}
 
 module.exports = {
   villainsList,
