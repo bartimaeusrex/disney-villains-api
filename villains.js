@@ -72,4 +72,6 @@ const villains = [{
   slug: 'ursula',
 }]
 
-module.exports = villains
+module.exports = {
+  villains,
+}
